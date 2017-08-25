@@ -143,7 +143,6 @@ int main()
 
 		std::cout << "from " << inet_ntoa(tmp) << " received " << PACK_FRAME_SIZE << " bytes in " << GetTickCount() - echo_rep.echo_request.dw_time
 			<< " ms with TTL = " << (int)echo_rep.ip_hdr.TTL << std::endl;
-		std::cout << "Type: " << (int)echo_rep.echo_request.icmp_hdr.type << " Code: " << (int)echo_rep.echo_request.icmp_hdr.code << std::endl;
 	}
 
 	finalize();
