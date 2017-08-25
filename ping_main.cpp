@@ -12,6 +12,8 @@ int main()
 	if (WSAStartup(WSA_VERSION, &filler))
 	{
 		output_error("Couldn't initialize WSA");
+		finalize();
+		
 		return EXIT_FAILURE;
 	}
 
