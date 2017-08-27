@@ -78,26 +78,6 @@ inline WORD IP_checksum(LPWORD data, size_t d_size)
 	return (WORD)~sum;
 }
 
-inline void enter_message(const char* invitation, char* buffer)
-{
-	std::cout << invitation;
-	std::cin.getline(buffer, BUFF_SIZE);
-}
-
-inline void delete_invalid_cons(con_list& cons)
-{
-	con_list new_cons;
-
-	for (con_list::iterator con = cons.begin(); con != cons.end(); con++)
-		if ((*con).sock != INVALID_SOCKET)
-		{
-			new_cons.push_back(*con);
-		}
-
-	cons.clear();
-	cons = new_cons;
-}
-
 inline void output_error(const char* message)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
@@ -128,53 +108,6 @@ inline void error_to_close_socket(const char* message, SOCKET sock)
 
 	output_error(message);
 	close_socket(sock);
-
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-}
-
-inline void error_to_close_con(const char* message, con_list& cons, const int i)
-{
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
-
-	error_to_close_socket(message, cons[i].sock);
-	cons[i].sock = INVALID_SOCKET;
-	std::cerr << "Connection reset" << std::endl;
-
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-}
-
-inline void error_to_close_con(const char* message, async_connection& con)
-{
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
-
-	error_to_close_socket(message, con.sock);
-	con.sock = INVALID_SOCKET;
-	std::cerr << "Connection reset" << std::endl;
-
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-}
-
-inline void close_con(const char* message, con_list& cons, const int i)
-{
-	std::cout << message << std::endl;
-
-	shutdown(cons[i].sock, SD_BOTH);
-	close_socket(cons[i].sock);
-	cons[i].sock = INVALID_SOCKET;
-}
-
-inline void error_to_close_cons(const char* message, con_list& cons)
-{
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
-
-	output_error(message);
-
-	for (u_int i = 0; i < cons.size(); i++)
-	{
-		close_socket(cons[i].sock);
-	}
-
-	cons.clear();
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 }
